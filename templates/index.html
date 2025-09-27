@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Uploader</title>
+</head>
+<body>
+  <h2>Upload Image</h2>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="file" id="fileInput">
+    <button type="submit">Upload</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      let fileInput = document.getElementById("fileInput");
+      let formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+      let res = await fetch("/upload", { method: "POST", body: formData });
+      let data = await res.json();
+      document.getElementById("result").innerHTML = 
+        "Direct Link: <a href='" + data.url + "' target='_blank'>" + data.url + "</a>";
+    });
+  </script>
+</body>
+</html>
